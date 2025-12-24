@@ -5,22 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Series Hub</title>
 
-  <!-- Telegram Mini App JS API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
   <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
+  <!-- animated background layer -->
+  <div class="bg-blobs">
+    <div class="blob purple"></div>
+    <div class="blob blue"></div>
+    <div class="blob pink"></div>
+  </div>
+
+  <!-- subtle animated scanline/noise -->
+  <div class="noise"></div>
+
   <header class="top">
     <div class="brand">
-      <!-- CHANNEL LOGO -->
       <img
         src="./images/channel-logo.png"
         alt="Channel logo"
         class="logo"
       />
-
       <div>
         <div class="title">Series Hub</div>
         <div class="subtitle" id="subtitle">Pick a bot to open</div>
