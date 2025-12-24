@@ -309,7 +309,7 @@ function showActionPopup(item){
 /* ===== App logic ===== */
 async function init(){
   // brand language + version
-  versionEl.textContent = "v1.0 • potato fried at the moon";
+  versionEl.textContent = "v1.0 •";
 
   subtitle.textContent = "Loading…";
   const res = await fetch("./catalog.json", { cache: "no-store" });
@@ -584,3 +584,4 @@ document.addEventListener("keydown", (e) => {
 });
 
 init();
+
