@@ -31,7 +31,6 @@ async function init() {
   catalog = await res.json();
 
   buildChips(catalog.categories || ["All"]);
-
   subtitle.textContent = "Pick a bot to open";
   render();
 }
@@ -82,34 +81,57 @@ function render() {
   items.forEach(item => grid.appendChild(makeCard(item)));
 }
 
+function makePoster(item, safeName) {
+  // If you have a poster path in catalog.json, use <img>.
+  // If it fails to load, we fallback to emoji poster (never show broken image).
+  if (item.poster) {
+    const frame = document.createElement("div");
+    frame.className = "posterFrame";
+
+    const img = document.createElement("img");
+    img.className = "posterImg";
+    img.src = item.poster;
+    img.alt = `${safeName} poster`;
+    img.loading = "lazy";
+
+    img.onerror = () => {
+      // replace with emoji fallback
+      frame.replaceWith(makeEmojiPoster(item));
+    };
+
+    frame.appendChild(img);
+    return frame;
+  }
+  return makeEmojiPoster(item);
+}
+
+function makeEmojiPoster(item) {
+  const poster = document.createElement("div");
+  poster.className = "poster";
+  poster.textContent = item.emojiPoster || "🎞️";
+  return poster;
+}
+
 function makeCard(item) {
   const card = document.createElement("div");
   card.className = "card";
 
   const isFav = favs.has(item.id);
-
   const safeName = escapeHtml(item.name);
   const safeDesc = escapeHtml(item.desc || "");
   const safeCat = escapeHtml(item.category || "Other");
-
-  const posterHtml = item.poster
-    ? `<div class="posterFrame"><img class="posterImg" src="${escapeAttr(item.poster)}" alt="${safeName} poster" loading="lazy" /></div>`
-    : `<div class="poster">${escapeHtml(item.emojiPoster || "🎞️")}</div>`;
 
   const newBadge = item.isNew ? `<span class="badge badge-new">New</span>` : "";
   const trendingBadge = item.isTrending ? `<span class="badge badge-trending">Trending</span>` : "";
 
   card.innerHTML = `
     <div class="cardTop">
-      ${posterHtml}
       <div class="cardMeta">
         <div class="nameRow">
           <h3 class="name">${safeName}</h3>
           <button class="iconBtn" aria-label="favorite">${isFav ? "⭐" : "☆"}</button>
         </div>
-
         <div class="desc">${safeDesc}</div>
-
         <div class="badges">
           <span class="badge">${safeCat}</span>
           ${newBadge}
@@ -124,11 +146,14 @@ function makeCard(item) {
     </div>
   `;
 
+  // Insert poster as the first element inside .cardTop
+  const cardTop = card.querySelector(".cardTop");
+  cardTop.insertBefore(makePoster(item, safeName), cardTop.firstChild);
+
   // Favorite
   card.querySelector(".iconBtn").onclick = () => {
     if (favs.has(item.id)) favs.delete(item.id);
     else favs.add(item.id);
-
     saveFavs(favs);
     tg?.HapticFeedback?.impactOccurred("light");
     render();
@@ -173,10 +198,6 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-function escapeAttr(str) {
-  return String(str).replaceAll('"', "&quot;");
-}
-
 searchInput.addEventListener("input", () => render());
 
 showFavsBtn.addEventListener("click", () => {
@@ -189,7 +210,6 @@ clearFavsBtn.addEventListener("click", () => {
   favs = new Set();
   saveFavs(favs);
   showFavsOnly = false;
-  saveFavs(favs);
   tg?.HapticFeedback?.notificationOccurred("success");
   render();
 });
