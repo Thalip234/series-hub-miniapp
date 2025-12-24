@@ -6,40 +6,31 @@
   <title>Series Hub</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Cache buster: bump v= if you ever need forced refresh -->
+  <link rel="stylesheet" href="./styles.css?v=potato_moon_1" />
 </head>
 
 <body>
-  <!-- animated background layer -->
   <div class="bg-blobs">
     <div class="blob purple"></div>
     <div class="blob blue"></div>
     <div class="blob pink"></div>
   </div>
-
-  <!-- subtle animated scanline/noise -->
   <div class="noise"></div>
 
   <header class="top">
     <div class="brand">
-      <img
-        src="./images/channel-logo.png"
-        alt="Channel logo"
-        class="logo"
-      />
-      <div>
+      <img src="./images/channel-logo.png" alt="Channel logo" class="logo" />
+      <div class="brandText">
         <div class="title">Series Hub</div>
-        <div class="subtitle" id="subtitle">Pick a bot to open</div>
+        <div class="subtitle" id="subtitle">Browse • Preview • Watch</div>
+        <div class="version" id="version">v1.0 • curated</div>
       </div>
     </div>
 
     <div class="searchWrap">
-      <input
-        id="search"
-        class="search"
-        type="search"
-        placeholder="Search series or bot…"
-      />
+      <input id="search" class="search" type="search" placeholder="Search series or bots…" />
     </div>
 
     <div class="chips" id="chips"></div>
@@ -49,8 +40,8 @@
     <section class="grid" id="grid"></section>
 
     <div class="empty" id="empty" hidden>
-      <div class="emptyTitle">No results</div>
-      <div class="emptyText">Try a different search or category.</div>
+      <div class="emptyTitle">No matches</div>
+      <div class="emptyText">Try another name, genre, or clear filters.</div>
     </div>
   </main>
 
@@ -58,6 +49,31 @@
     <button class="btnGhost" id="clearFavs">Clear favorites</button>
     <button class="btn" id="showFavs">Show favorites</button>
   </footer>
+
+  <!-- Cinematic modal -->
+  <div class="modal" id="modal" hidden>
+    <div class="modalBackdrop" id="modalBackdrop"></div>
+    <div class="modalSheet" role="dialog" aria-modal="true">
+      <div class="modalTop">
+        <div class="modalPoster" id="modalPoster"></div>
+        <div class="modalHead">
+          <div class="modalTitle" id="modalTitle">Title</div>
+          <div class="modalMeta" id="modalMeta">Meta</div>
+          <div class="modalBadges" id="modalBadges"></div>
+        </div>
+        <button class="modalClose" id="modalClose" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="modalIntro" id="modalIntro"></div>
+      </div>
+
+      <div class="modalActions">
+        <button class="btnGhost" id="modalSecondary">Channel</button>
+        <button class="btn" id="modalPrimary">Watch now</button>
+      </div>
+    </div>
+  </div>
 
   <script src="./app.js"></script>
 </body>
