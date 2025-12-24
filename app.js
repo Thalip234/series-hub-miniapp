@@ -1,9 +1,7 @@
-// ====== Telegram WebApp (safe usage) ======
 const tg = window.Telegram?.WebApp;
 tg?.ready();
-tg?.expand(); // open bigger height
+tg?.expand();
 
-// ====== DOM elements ======
 const grid = document.getElementById("grid");
 const chips = document.getElementById("chips");
 const searchInput = document.getElementById("search");
@@ -12,7 +10,6 @@ const subtitle = document.getElementById("subtitle");
 const showFavsBtn = document.getElementById("showFavs");
 const clearFavsBtn = document.getElementById("clearFavs");
 
-// ====== Favorites storage ======
 const FAV_KEY = "series_hub_favorites_v1";
 function loadFavs() {
   try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || "[]")); }
@@ -23,20 +20,16 @@ function saveFavs(favs) {
 }
 let favs = loadFavs();
 
-// ====== App state ======
 let catalog = null;
 let selectedCategory = "All";
 let showFavsOnly = false;
 
-// ====== Load catalog.json ======
 async function init() {
   subtitle.textContent = "Loading…";
   const res = await fetch("./catalog.json", { cache: "no-store" });
   catalog = await res.json();
 
-  // Build category chips
   buildChips(catalog.categories || ["All"]);
-
   subtitle.textContent = "Pick a bot to open";
   render();
 }
@@ -50,8 +43,6 @@ function buildChips(categories) {
 
     el.onclick = () => {
       selectedCategory = cat;
-      // turn off "favorites only" if you change category? (your choice)
-      // showFavsOnly = false;
       updateChipUI();
       render();
       tg?.HapticFeedback?.impactOccurred("light");
@@ -68,16 +59,10 @@ function updateChipUI() {
 }
 
 function matchesFilters(item, q) {
-  // Search
   const text = `${item.name} ${item.desc} ${item.botUsername}`.toLowerCase();
   const okSearch = text.includes(q);
-
-  // Category
   const okCategory = (selectedCategory === "All") || (item.category === selectedCategory);
-
-  // Favorites-only mode
   const okFavs = !showFavsOnly || favs.has(item.id);
-
   return okSearch && okCategory && okFavs;
 }
 
@@ -89,12 +74,9 @@ function render() {
 
   grid.innerHTML = "";
   empty.hidden = items.length !== 0;
-
   showFavsBtn.textContent = showFavsOnly ? "Showing favorites" : "Show favorites";
 
-  items.forEach(item => {
-    grid.appendChild(makeCard(item));
-  });
+  items.forEach(item => grid.appendChild(makeCard(item)));
 }
 
 function makeCard(item) {
@@ -102,18 +84,26 @@ function makeCard(item) {
   card.className = "card";
 
   const isFav = favs.has(item.id);
+  const safeName = escapeHtml(item.name);
+  const safeDesc = escapeHtml(item.desc || "");
+  const safeCat = escapeHtml(item.category || "Other");
+
+  // If poster exists, show <img>. Otherwise fallback to emojiPoster or 🎞️
+  const posterHtml = item.poster
+    ? `<img class="posterImg" src="${escapeAttr(item.poster)}" alt="${safeName} poster" loading="lazy" />`
+    : `<div class="poster">${escapeHtml(item.emojiPoster || "🎞️")}</div>`;
 
   card.innerHTML = `
     <div class="cardTop">
-      <div class="poster">${escapeHtml(item.emojiPoster || "🎞️")}</div>
+      ${item.poster ? `<div class="posterFrame">${posterHtml}</div>` : posterHtml}
       <div class="cardMeta">
         <div class="nameRow">
-          <h3 class="name">${escapeHtml(item.name)}</h3>
+          <h3 class="name">${safeName}</h3>
           <button class="iconBtn" aria-label="favorite">${isFav ? "⭐" : "☆"}</button>
         </div>
-        <div class="desc">${escapeHtml(item.desc || "")}</div>
+        <div class="desc">${safeDesc}</div>
         <div class="badges">
-          <span class="badge">${escapeHtml(item.category || "Other")}</span>
+          <span class="badge">${safeCat}</span>
           ${item.isNew ? `<span class="badge">New</span>` : ""}
           ${item.isTrending ? `<span class="badge">Trending</span>` : ""}
         </div>
@@ -126,55 +116,43 @@ function makeCard(item) {
     </div>
   `;
 
-  // Favorite button
-  const favBtn = card.querySelector(".iconBtn");
-  favBtn.onclick = () => {
+  // Favorite
+  card.querySelector(".iconBtn").onclick = () => {
     if (favs.has(item.id)) favs.delete(item.id);
     else favs.add(item.id);
-
     saveFavs(favs);
     tg?.HapticFeedback?.impactOccurred("light");
-    render(); // rerender to update stars
+    render();
   };
 
-  // Join channel button
-  const joinBtn = card.querySelector(".join");
-  joinBtn.onclick = () => {
+  // Join channel
+  card.querySelector(".join").onclick = () => {
     const chan = (item.joinChannel || "").trim().replace(/^@/, "");
     if (!chan) return popup("Missing channel", "Add joinChannel in catalog.json for this item.");
     openTelegram(`https://t.me/${encodeURIComponent(chan)}`);
   };
 
-  // Open bot button
-  const openBtn = card.querySelector(".open");
-  openBtn.onclick = () => {
+  // Open bot
+  card.querySelector(".open").onclick = () => {
     const bot = (item.botUsername || "").trim().replace(/^@/, "");
     if (!bot) return popup("Missing bot", "Add botUsername in catalog.json for this item.");
-
-    // Optional: add a start param so your bot knows user came from the hub
-    // If you don't want it, remove "?start=hub" part.
     openTelegram(`https://t.me/${encodeURIComponent(bot)}?start=hub`);
   };
 
   return card;
 }
 
-// Use Telegram WebApp method if available, fallback to normal link
 function openTelegram(url) {
   try {
-    // Telegram WebApp API supports opening links / telegram links (so it feels native)
-    tg?.openTelegramLink ? tg.openTelegramLink(url) : window.location.href = url;
+    tg?.openTelegramLink ? tg.openTelegramLink(url) : (window.location.href = url);
   } catch {
     window.location.href = url;
   }
 }
 
 function popup(title, message) {
-  if (tg?.showPopup) {
-    tg.showPopup({ title, message, buttons: [{ type: "ok" }] });
-  } else {
-    alert(`${title}\n\n${message}`);
-  }
+  if (tg?.showPopup) tg.showPopup({ title, message, buttons: [{ type: "ok" }] });
+  else alert(`${title}\n\n${message}`);
 }
 
 function escapeHtml(str) {
@@ -185,8 +163,11 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+function escapeAttr(str) {
+  // for src="" attributes
+  return String(str).replaceAll('"', "&quot;");
+}
 
-// ====== events ======
 searchInput.addEventListener("input", () => render());
 
 showFavsBtn.addEventListener("click", () => {
