@@ -1,28 +1,49 @@
 {
-  "categories": ["All", "Anime", "Drama", "Arabic", "EN"],
+  "categories": ["All", "Anime", "Drama", "Crime", "Thriller", "Mystery"],
   "items": [
     {
-      "id": "bot1",
-      "name": "My Anime Series Bot",
-      "desc": "Season 1–2 • HD • Updated weekly",
+      "id": "records-of-ragnarok",
+      "name": "Records of Ragnarok",
+      "desc": "Anime • Epic battles between gods and humans",
       "category": "Anime",
-      "botUsername": "Seriesbayybot",
+      "botUsername": "RecordsofRagnarokbot",
       "joinChannel": "seriebay",
       "isNew": true,
       "isTrending": true,
-      "emojiPoster": "🟣"
+      "emojiPoster": "⚔️"
     },
     {
-      "id": "bot2",
-      "name": "Drama Series Bot",
-      "desc": "Complete series • Subtitles",
+      "id": "adolescence-series",
+      "name": "Adolescence",
+      "desc": "Drama / Thriller • Dark and intense storytelling",
       "category": "Drama",
-      "botUsername": "AnotherBotUsername",
-      "joinChannel": "YourChannelUsernameHere",
+      "botUsername": "Adolescenceseriebot",
+      "joinChannel": "seriebay",
+      "isNew": true,
+      "isTrending": false,
+      "emojiPoster": "🧠"
+    },
+    {
+      "id": "task-series",
+      "name": "Task",
+      "desc": "Crime Drama • Investigation and suspense",
+      "category": "Crime",
+      "botUsername": "taskseriebot",
+      "joinChannel": "seriebay",
       "isNew": false,
       "isTrending": true,
-      "emojiPoster": "🔵"
+      "emojiPoster": "🕵️"
+    },
+    {
+      "id": "black-rabbit-series",
+      "name": "Black Rabbit",
+      "desc": "Crime • Mystery • Thriller",
+      "category": "Crime",
+      "botUsername": "BlackRabbitseriesbot",
+      "joinChannel": "seriebay",
+      "isNew": false,
+      "isTrending": true,
+      "emojiPoster": "🐇"
     }
   ]
 }
-
