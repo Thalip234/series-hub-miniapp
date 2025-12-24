@@ -10,7 +10,7 @@
       "joinChannel": "seriebay",
       "isNew": true,
       "isTrending": true,
-      "emojiPoster": "⚔️"
+      "poster": "./images/ragnarok.jpg"
     },
     {
       "id": "adolescence-series",
@@ -21,7 +21,7 @@
       "joinChannel": "seriebay",
       "isNew": true,
       "isTrending": false,
-      "emojiPoster": "🧠"
+      "poster": "./images/adolescence.jpg"
     },
     {
       "id": "task-series",
@@ -32,7 +32,7 @@
       "joinChannel": "seriebay",
       "isNew": false,
       "isTrending": true,
-      "emojiPoster": "🕵️"
+      "poster": "./images/task.jpg"
     },
     {
       "id": "black-rabbit-series",
@@ -43,7 +43,7 @@
       "joinChannel": "seriebay",
       "isNew": false,
       "isTrending": true,
-      "emojiPoster": "🐇"
+      "poster": "./images/blackrabbit.jpg"
     }
   ]
 }
