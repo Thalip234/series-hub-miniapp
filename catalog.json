@@ -6,8 +6,8 @@
       "name": "My Anime Series Bot",
       "desc": "Season 1–2 • HD • Updated weekly",
       "category": "Anime",
-      "botUsername": "YourBotUsernameHere",
-      "joinChannel": "YourChannelUsernameHere",
+      "botUsername": "Seriesbayybot",
+      "joinChannel": "seriebay",
       "isNew": true,
       "isTrending": true,
       "emojiPoster": "🟣"
@@ -25,3 +25,4 @@
     }
   ]
 }
+
