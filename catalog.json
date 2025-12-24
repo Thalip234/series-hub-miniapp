@@ -1,0 +1,27 @@
+{
+  "categories": ["All", "Anime", "Drama", "Arabic", "EN"],
+  "items": [
+    {
+      "id": "bot1",
+      "name": "My Anime Series Bot",
+      "desc": "Season 1–2 • HD • Updated weekly",
+      "category": "Anime",
+      "botUsername": "YourBotUsernameHere",
+      "joinChannel": "YourChannelUsernameHere",
+      "isNew": true,
+      "isTrending": true,
+      "emojiPoster": "🟣"
+    },
+    {
+      "id": "bot2",
+      "name": "Drama Series Bot",
+      "desc": "Complete series • Subtitles",
+      "category": "Drama",
+      "botUsername": "AnotherBotUsername",
+      "joinChannel": "YourChannelUsernameHere",
+      "isNew": false,
+      "isTrending": true,
+      "emojiPoster": "🔵"
+    }
+  ]
+}

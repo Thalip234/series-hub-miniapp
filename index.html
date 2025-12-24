@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Series Hub</title>
+
+  <!-- Telegram Mini App JS API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo">🎬</div>
+      <div>
+        <div class="title">Series Hub</div>
+        <div class="subtitle" id="subtitle">Pick a bot to open</div>
+      </div>
+    </div>
+
+    <div class="searchWrap">
+      <input id="search" class="search" type="search" placeholder="Search series or bot…" />
+    </div>
+
+    <div class="chips" id="chips">
+      <!-- category chips are inserted by JS -->
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="grid" id="grid">
+      <!-- cards inserted by JS -->
+    </section>
+
+    <div class="empty" id="empty" hidden>
+      <div class="emptyTitle">No results</div>
+      <div class="emptyText">Try a different search or category.</div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <button class="btnGhost" id="clearFavs">Clear favorites</button>
+    <button class="btn" id="showFavs">Show favorites</button>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
