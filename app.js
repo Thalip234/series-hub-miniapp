@@ -11,6 +11,7 @@ const showFavsBtn = document.getElementById("showFavs");
 const clearFavsBtn = document.getElementById("clearFavs");
 
 const FAV_KEY = "series_hub_favorites_v1";
+
 function loadFavs() {
   try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || "[]")); }
   catch { return new Set(); }
@@ -30,6 +31,7 @@ async function init() {
   catalog = await res.json();
 
   buildChips(catalog.categories || ["All"]);
+
   subtitle.textContent = "Pick a bot to open";
   render();
 }
@@ -74,6 +76,7 @@ function render() {
 
   grid.innerHTML = "";
   empty.hidden = items.length !== 0;
+
   showFavsBtn.textContent = showFavsOnly ? "Showing favorites" : "Show favorites";
 
   items.forEach(item => grid.appendChild(makeCard(item)));
@@ -84,28 +87,33 @@ function makeCard(item) {
   card.className = "card";
 
   const isFav = favs.has(item.id);
+
   const safeName = escapeHtml(item.name);
   const safeDesc = escapeHtml(item.desc || "");
   const safeCat = escapeHtml(item.category || "Other");
 
-  // If poster exists, show <img>. Otherwise fallback to emojiPoster or 🎞️
   const posterHtml = item.poster
-    ? `<img class="posterImg" src="${escapeAttr(item.poster)}" alt="${safeName} poster" loading="lazy" />`
+    ? `<div class="posterFrame"><img class="posterImg" src="${escapeAttr(item.poster)}" alt="${safeName} poster" loading="lazy" /></div>`
     : `<div class="poster">${escapeHtml(item.emojiPoster || "🎞️")}</div>`;
+
+  const newBadge = item.isNew ? `<span class="badge badge-new">New</span>` : "";
+  const trendingBadge = item.isTrending ? `<span class="badge badge-trending">Trending</span>` : "";
 
   card.innerHTML = `
     <div class="cardTop">
-      ${item.poster ? `<div class="posterFrame">${posterHtml}</div>` : posterHtml}
+      ${posterHtml}
       <div class="cardMeta">
         <div class="nameRow">
           <h3 class="name">${safeName}</h3>
           <button class="iconBtn" aria-label="favorite">${isFav ? "⭐" : "☆"}</button>
         </div>
+
         <div class="desc">${safeDesc}</div>
+
         <div class="badges">
           <span class="badge">${safeCat}</span>
-          ${item.isNew ? `<span class="badge">New</span>` : ""}
-          ${item.isTrending ? `<span class="badge">Trending</span>` : ""}
+          ${newBadge}
+          ${trendingBadge}
         </div>
       </div>
     </div>
@@ -120,6 +128,7 @@ function makeCard(item) {
   card.querySelector(".iconBtn").onclick = () => {
     if (favs.has(item.id)) favs.delete(item.id);
     else favs.add(item.id);
+
     saveFavs(favs);
     tg?.HapticFeedback?.impactOccurred("light");
     render();
@@ -163,8 +172,8 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 function escapeAttr(str) {
-  // for src="" attributes
   return String(str).replaceAll('"', "&quot;");
 }
 
@@ -180,6 +189,7 @@ clearFavsBtn.addEventListener("click", () => {
   favs = new Set();
   saveFavs(favs);
   showFavsOnly = false;
+  saveFavs(favs);
   tg?.HapticFeedback?.notificationOccurred("success");
   render();
 });
