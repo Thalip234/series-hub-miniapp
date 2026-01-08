@@ -552,16 +552,17 @@ body::after{
 .lockPill.comingSoon {
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.7px;
   font-size: 11px;
   padding: 7px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.15);
 
-  /* slightly stronger blur (tenser) */
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* slightly more tense blur (clean, not muddy) */
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
+
 
 
