@@ -194,24 +194,6 @@
       "locked": true,
       "lockReason": "Coming soon",
       "poster": "./images/Untamed.jpg"
-    },
-
-    {
-      "id": "coming-soon-1",
-      "name": "Night Signal",
-      "desc": "Mystery • Coming soon",
-      "category": "Mystery",
-      "tags": ["Mystery", "Thriller"],
-      "intro": "Coming soon. This card is here to build hype and show the hub is always growing.",
-      "seasons": 1,
-      "episodes": 0,
-      "botUsername": "",
-      "joinChannel": "seriebay",
-      "isNew": true,
-      "isTrending": false,
-      "comingSoon": true,
-      "locked": true,
-      "lockReason": "Coming soon"
     }
   ]
 }
