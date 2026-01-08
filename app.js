@@ -272,9 +272,12 @@ function showActionPopup(item){
   const locked = isLocked(item);
   const joined = unlocked.has(item.id);
 
+  // ✅ Hide favorites actions for comingSoon cards (prevents clash + keeps it clean)
+  const allowFavActions = !item.comingSoon;
+
   const buttons = [
     { id: "preview", type: "default", text: "Preview" },
-    { id: "fav", type: "default", text: isFav ? "Remove favorite" : "Add favorite" },
+    ...(allowFavActions ? [{ id: "fav", type: "default", text: isFav ? "Remove favorite" : "Add favorite" }] : []),
     { id: "share", type: "default", text: "Share" },
     { id: "close", type: "cancel", text: "Close" }
   ];
@@ -285,7 +288,7 @@ function showActionPopup(item){
     buttons
   }, (btnId) => {
     if (btnId === "preview") openModal(item);
-    if (btnId === "fav"){
+    if (btnId === "fav" && allowFavActions){
       if (favs.has(item.id)) favs.delete(item.id);
       else favs.add(item.id);
       saveSet(FAV_KEY, favs);
@@ -405,13 +408,18 @@ function render(animate){
     name.className = "name";
     name.innerHTML = esc(item.name || "Series");
 
-    const favBtn = document.createElement("button");
-    favBtn.className = "iconBtn";
-    favBtn.setAttribute("aria-label", "favorite");
-    favBtn.textContent = favs.has(item.id) ? "⭐" : "☆";
-
-    nameRow.appendChild(name);
-    nameRow.appendChild(favBtn);
+    // ✅ Hide favorite icon ONLY for comingSoon cards (prevents clash with badge)
+    let favBtn = null;
+    if (!item.comingSoon){
+      favBtn = document.createElement("button");
+      favBtn.className = "iconBtn";
+      favBtn.setAttribute("aria-label", "favorite");
+      favBtn.textContent = favs.has(item.id) ? "⭐" : "☆";
+      nameRow.appendChild(name);
+      nameRow.appendChild(favBtn);
+    } else {
+      nameRow.appendChild(name);
+    }
 
     const desc = document.createElement("div");
     desc.className = "desc";
@@ -491,9 +499,12 @@ function render(animate){
     if (locked){
       const overlay = document.createElement("div");
       overlay.className = "lockOverlay";
+
       const pill = document.createElement("div");
-      pill.className = "lockPill";
-      pill.textContent = item.lockReason || "Locked";
+      // ✅ Add styling hook for coming soon badge
+      pill.className = "lockPill" + (item.comingSoon ? " comingSoon" : "");
+      pill.textContent = item.lockReason || (item.comingSoon ? "Coming soon" : "Locked");
+
       overlay.appendChild(pill);
       card.appendChild(overlay);
     }
@@ -510,13 +521,15 @@ function render(animate){
     attachLongPress(card, item);
 
     // Favorite
-    favBtn.onclick = () => {
-      haptic("light");
-      if (favs.has(item.id)) favs.delete(item.id);
-      else favs.add(item.id);
-      saveSet(FAV_KEY, favs);
-      render(true);
-    };
+    if (favBtn){
+      favBtn.onclick = () => {
+        haptic("light");
+        if (favs.has(item.id)) favs.delete(item.id);
+        else favs.add(item.id);
+        saveSet(FAV_KEY, favs);
+        render(true);
+      };
+    }
 
     // Left button action
     btnLeft.onclick = () => {
@@ -584,4 +597,3 @@ document.addEventListener("keydown", (e) => {
 });
 
 init();
-
