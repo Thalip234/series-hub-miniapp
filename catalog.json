@@ -159,6 +159,42 @@
       "lockReason": "Coming soon",
       "poster": "./images/MemoryofaKiller.jpg"
     },
+    {
+      "id": "spider-noir-coming-soon",
+      "name": "Spider Noir",
+      "desc": "Mystery • Thriller • Coming soon",
+      "category": "Mystery",
+      "tags": ["Mystery", "Thriller"],
+      "intro": "Coming soon. A noir mystery with shadows, secrets, and a darker edge.",
+      "seasons": 1,
+      "episodes": 0,
+      "botUsername": "",
+      "joinChannel": "seriebay",
+      "isNew": true,
+      "isTrending": false,
+      "comingSoon": true,
+      "locked": true,
+      "lockReason": "Coming soon",
+      "poster": "./images/SpiderNoir.jpg"
+    },
+    {
+      "id": "untamed-coming-soon",
+      "name": "Untamed (2025)",
+      "desc": "Thriller • Mystery • Coming soon",
+      "category": "Thriller",
+      "tags": ["Thriller", "Mystery"],
+      "intro": "Coming soon. A tense Netflix thriller with danger close and trust even closer.",
+      "seasons": 1,
+      "episodes": 0,
+      "botUsername": "",
+      "joinChannel": "seriebay",
+      "isNew": true,
+      "isTrending": false,
+      "comingSoon": true,
+      "locked": true,
+      "lockReason": "Coming soon",
+      "poster": "./images/Untamed.jpg"
+    },
 
     {
       "id": "coming-soon-1",
