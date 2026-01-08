@@ -548,3 +548,17 @@ body::after{
 @media (prefers-reduced-motion: reduce){
   *{ animation:none !important; transition:none !important; }
 }
+/* Coming Soon badge styling (overlay pill) */
+.lockPill.comingSoon {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  font-size: 11px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
